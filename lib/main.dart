@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'models.dart';
@@ -65,36 +67,60 @@ class AtomWidget extends StatefulWidget {
 }
 
 class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
+  Timer t;
   @override
   void initState() {
     super.initState();
-    _controller = new AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _controller.repeat();
+    t = Timer.periodic(Duration(milliseconds: 16), (timer) {
+      setState(() {
+        widget.orbits.updateElectronsPosition();
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, w) {
-        widget.orbits.updateElectronsPosition(_controller.value);
-        return Stack(
-          children: widget.orbits
-              .map(
-                (orbit) => Transform.rotate(
-                  angle: degreesToRads(orbit.angle),
-                  child: CustomPaint(
-                    painter: _OrbitPainter(orbit),
-                    size: Size(double.infinity, double.infinity),
-                  ),
-                ),
+    final atomSize = (MediaQuery.of(context).size.shortestSide / 3) * 2;
+    return Stack(
+      children: [
+        ...widget.orbits
+            .map(
+              (orbit) => Center(
+            child: Transform.rotate(
+              angle: degreesToRads(orbit.angle),
+              child: CustomPaint(
+                painter: _OrbitPainter(orbit),
+                size: Size(atomSize, atomSize),
+              ),
+            ),
+          ),
+        )
+            .toList(),
+        Center(
+          child: Container(
+            width: atomSize / 10,
+            height: atomSize / 10,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xffffc560),
+                  Color(0xffff593b),
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
               )
-              .toList(),
-        );
-      },
+            ),
+          ),
+        )
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    t.cancel();
+    super.dispose();
   }
 }
 
@@ -107,7 +133,10 @@ class _OrbitPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     Path orbitPath = new Path();
-    orbitPath.addOval(Rect.fromCenter(center: center, width: 200, height: 40));
+
+    final width = size.shortestSide;
+    final height = width * 0.24;
+    orbitPath.addOval(Rect.fromCenter(center: center, width: width, height: height));
 
     canvas.drawPath(
       orbitPath,

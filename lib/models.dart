@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:funny_counter/common.dart';
 
 class Orbit {
   final List<Electron> electrons;
@@ -14,7 +15,7 @@ class Orbit {
 }
 
 extension OrbitsExtension on List<Orbit> {
-  void updateElectronsPosition(double animValue) {
+  void updateElectronsPosition() {
     this.forEach((orbit) {
       orbit.electrons.forEach((electron) {
         electron.move();
@@ -51,12 +52,14 @@ class Electron {
 
   static Electron random() {
     const colors = [
-      Colors.green, Colors.red, Colors.cyan, Colors.purple,
+      Colors.greenAccent, Colors.redAccent, Colors.cyanAccent, Colors.purpleAccent,
+      Colors.yellowAccent,
     ];
     return Electron(
       color: colors[Random().nextInt(colors.length)],
       size: 4,
-      speed: (Random().nextDouble() * 0.003) + 0.005
+      speed: randD(0.003, 0.01)
     );
   }
 }
+// (Random().nextDouble() * 0.003) + 0.005
