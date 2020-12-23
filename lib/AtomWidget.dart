@@ -16,6 +16,7 @@ class AtomWidget extends StatefulWidget {
 
 class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateMixin {
   Timer t;
+
   @override
   void initState() {
     super.initState();
@@ -34,15 +35,15 @@ class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateM
         ...widget.orbits
             .map(
               (orbit) => Center(
-            child: Transform.rotate(
-              angle: degreesToRads(orbit.angle),
-              child: CustomPaint(
-                painter: _OrbitPainter(orbit),
-                size: Size(atomSize, atomSize),
+                child: Transform.rotate(
+                  angle: degreesToRads(orbit.angle),
+                  child: CustomPaint(
+                    painter: _OrbitPainter(orbit),
+                    size: Size(atomSize, atomSize),
+                  ),
+                ),
               ),
-            ),
-          ),
-        )
+            )
             .toList(),
         Center(
           child: Container(
@@ -57,8 +58,7 @@ class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateM
                   ],
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
-                )
-            ),
+                )),
           ),
         )
       ],
@@ -84,6 +84,7 @@ class _OrbitPainter extends CustomPainter {
 
     final width = size.shortestSide;
     final height = width * 0.24;
+
     orbitPath.addOval(Rect.fromCenter(center: center, width: width, height: height));
 
     canvas.drawPath(
@@ -95,20 +96,18 @@ class _OrbitPainter extends CustomPainter {
     );
 
     orbit.electrons.forEach((electron) {
-      final metrics = orbitPath.computeMetrics(forceClosed: true);
-      final metric = metrics.first;
-      final start = electron.positionPercent * metric.length + (electron.currentSize / 2);
-      final end = start + electron.currentSize - (electron.currentSize / 2);
-      final electronPath = metric.extractPath(start, end);
-
       electron.currentSize = lerpDouble(electron.currentSize, electron.targetSize, 0.08);
-      canvas.drawPath(
-          electronPath,
-          Paint()
-            ..color = electron.color
-            ..style = PaintingStyle.stroke
-            ..strokeCap = StrokeCap.round
-            ..strokeWidth = electron.currentSize);
+      electron.currentColor = Color.lerp(electron.currentColor, electron.targetColor, 0.08);
+      final degree = math.pi * 2 * electron.positionPercent;
+      canvas.drawCircle(
+        center + Offset(math.cos(degree) * (width / 2), math.sin(degree) * (height / 2)),
+        electron.currentSize / 2,
+        Paint()
+          ..color = electron.currentColor
+          ..style = PaintingStyle.fill
+          ..strokeCap = StrokeCap.round
+          ..strokeWidth = electron.currentSize,
+      );
     });
   }
 
