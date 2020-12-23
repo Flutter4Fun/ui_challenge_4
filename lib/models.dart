@@ -25,9 +25,10 @@ extension OrbitsExtension on List<Orbit> {
 }
 
 class Electron {
-  final Color color;
-  final double size;
-  final double speed;
+  Color color;
+  double currentSize;
+  double speed;
+  double targetSize;
 
   double _positionPercent = 0;
 
@@ -36,12 +37,11 @@ class Electron {
   }
 
   Electron({
-    Color color,
-    double size,
-    double speed,
-  })  : color = color ?? Colors.red,
-        size = size ?? 3,
-        speed = speed ?? 0.005;
+    @required this.color,
+    @required this.currentSize,
+    @required this.speed,
+    @required this.targetSize,
+  });
 
   void move() {
     if (_positionPercent >= 1.0) {
@@ -55,11 +55,14 @@ class Electron {
       Colors.greenAccent, Colors.redAccent, Colors.cyanAccent, Colors.purpleAccent,
       Colors.yellowAccent,
     ];
+    final size = randD(4, 6);
+    final initialSize = size * 3;
+    final color = colors[Random().nextInt(colors.length)];
     return Electron(
-      color: colors[Random().nextInt(colors.length)],
-      size: 4,
-      speed: randD(0.003, 0.01)
+      color: color,
+      currentSize: initialSize,
+      targetSize: size,
+      speed: randD(0.003, 0.01),
     );
   }
 }
-// (Random().nextDouble() * 0.003) + 0.005
