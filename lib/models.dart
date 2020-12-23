@@ -2,7 +2,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:funny_counter/common.dart';
+
+double randD(double min, double max) =>
+    Random().nextDouble() * (max - min) + min;
 
 class Orbit {
   final List<Electron> electrons;
