@@ -1,3 +1,5 @@
+import 'package:f4f_bottom_bar/f4f_bottom_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'AtomWidget.dart';
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
@@ -48,10 +50,20 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            _orbits[math.Random().nextInt(_orbits.length)].electrons.add(Electron.random());
+            _orbits[math.Random().nextInt(_orbits.length)]
+                .electrons
+                .add(Electron.random());
           });
         },
         child: const Icon(Icons.add),
+      ),
+      bottomNavigationBar: const F4FBottomBarWidget(
+        sections: [
+          F4FBottomBarSection(title: 'Blog Post in Flutter 4 Fun', link: 'https://flutter4fun.com/ui-challenge-4/'),
+          if (!kIsWeb)
+            F4FBottomBarSection(title: 'Live Demo', link: 'https://flutter4fun.github.io/ui_challenge_4_live/#/'),
+          F4FBottomBarSection(title: 'Source Code', link: 'https://github.com/Flutter4Fun/ui_challenge_4/'),
+        ],
       ),
     );
   }
