@@ -1,9 +1,16 @@
-# electrons_counter_app
+# ui_challenge_4
 
-Implemented for the [#FlutterCounterChallenge2020](https://twitter.com/search?q=FlutterCounterChallenge2020&src=typed_query).
+A new Flutter project.
 
-Explained in [Flutter4Fun.com](https://flutter4fun.com/ui-challenge-4) blog.
+## Getting Started
 
-<img src="https://github.com/imaNNeoFighT/electron_counter_app/raw/master/media/electrons_counter_app.gif" width="300" >
+This project is a starting point for a Flutter application.
 
-[DartPad](https://dartpad.dev/e480a9224ba6d527fe7718180f7343c9?)
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
