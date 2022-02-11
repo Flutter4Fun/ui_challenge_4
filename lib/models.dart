@@ -8,20 +8,20 @@ double randD(double min, double max) =>
 
 class Orbit {
   final List<Electron> electrons;
-  final angle;
+  final double angle;
 
   Orbit({
-    @required this.electrons,
-    @required this.angle,
+    required this.electrons,
+    required this.angle,
   });
 }
 
 extension OrbitsExtension on List<Orbit> {
   void updateElectronsPosition() {
-    this.forEach((orbit) {
-      orbit.electrons.forEach((electron) {
+    forEach((orbit) {
+      for (var electron in orbit.electrons) {
         electron.move();
-      });
+      }
     });
   }
 }
@@ -42,11 +42,11 @@ class Electron {
   }
 
   Electron({
-    @required this.currentSize,
-    @required this.targetSize,
-    @required this.currentColor,
-    @required this.targetColor,
-    @required this.speed,
+    required this.currentSize,
+    required this.targetSize,
+    required this.currentColor,
+    required this.targetColor,
+    required this.speed,
   });
 
   void move() {

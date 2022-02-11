@@ -8,19 +8,19 @@ import 'models.dart';
 class AtomWidget extends StatefulWidget {
   final List<Orbit> orbits;
 
-  const AtomWidget({Key key, @required this.orbits}) : super(key: key);
+  const AtomWidget({Key? key, required this.orbits}) : super(key: key);
 
   @override
   _AtomWidgetState createState() => _AtomWidgetState();
 }
 
 class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateMixin {
-  Timer t;
+  late Timer t;
 
   @override
   void initState() {
     super.initState();
-    t = Timer.periodic(Duration(milliseconds: 16), (timer) {
+    t = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       setState(() {
         widget.orbits.updateElectronsPosition();
       });
@@ -49,7 +49,7 @@ class _AtomWidgetState extends State<AtomWidget> with SingleTickerProviderStateM
           child: Container(
             width: atomSize / 10,
             height: atomSize / 10,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                   colors: [
@@ -80,7 +80,7 @@ class _OrbitPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    Path orbitPath = new Path();
+    Path orbitPath = Path();
 
     final width = size.shortestSide;
     final height = width * 0.24;
@@ -90,14 +90,14 @@ class _OrbitPainter extends CustomPainter {
     canvas.drawPath(
       orbitPath,
       Paint()
-        ..color = Color(0xFF26224f)
+        ..color = const Color(0xFF26224f)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1,
     );
 
-    orbit.electrons.forEach((electron) {
-      electron.currentSize = lerpDouble(electron.currentSize, electron.targetSize, 0.08);
-      electron.currentColor = Color.lerp(electron.currentColor, electron.targetColor, 0.08);
+    for (var electron in orbit.electrons) {
+      electron.currentSize = lerpDouble(electron.currentSize, electron.targetSize, 0.08)!;
+      electron.currentColor = Color.lerp(electron.currentColor, electron.targetColor, 0.08)!;
       final degree = math.pi * 2 * electron.positionPercent;
       canvas.drawCircle(
         center + Offset(math.cos(degree) * (width / 2), math.sin(degree) * (height / 2)),
@@ -108,13 +108,13 @@ class _OrbitPainter extends CustomPainter {
           ..strokeCap = StrokeCap.round
           ..strokeWidth = electron.currentSize,
       );
-    });
+    }
   }
 
   @override
   bool shouldRepaint(covariant _OrbitPainter oldDelegate) => true;
 }
 
-num degreesToRads(num deg) {
+double degreesToRads(double deg) {
   return (deg * math.pi) / 180.0;
 }

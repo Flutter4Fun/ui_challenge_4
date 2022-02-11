@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'AtomWidget.dart';
@@ -24,22 +23,23 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Orbit> _orbits = [
+  final List<Orbit> _orbits = [
     Orbit(electrons: [], angle: 0.0),
     Orbit(electrons: [], angle: 60.0),
     Orbit(electrons: [], angle: 120.0),
   ];
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF191636),
+      backgroundColor: const Color(0xFF191636),
       body: Center(
         child: AtomWidget(
           orbits: _orbits,
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
             _orbits[math.Random().nextInt(_orbits.length)].electrons.add(Electron.random());
           });
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
